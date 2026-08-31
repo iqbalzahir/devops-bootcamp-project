@@ -16,7 +16,7 @@ data "aws_iam_instance_profile" "my_ssm_profile" {
 resource "aws_instance" "web_server" {
   ami                    = data.aws_ami.my_ami.id
   instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.devops_public_subnet.id
+  subnet_id              = module.vpc.public_subnets[0]
   private_ip             = "10.0.0.5"
   vpc_security_group_ids = [aws_security_group.devops_public_sg.id]
   iam_instance_profile   = data.aws_iam_instance_profile.my_ssm_profile.name
@@ -40,7 +40,7 @@ resource "aws_eip" "web_eip" {
 resource "aws_instance" "controller" {
   ami                    = data.aws_ami.my_ami.id
   instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.devops_private_subnet.id
+  subnet_id              = module.vpc.private_subnets[0]
   private_ip             = "10.0.0.135"
   vpc_security_group_ids = [aws_security_group.devops_private_sg.id]
   iam_instance_profile   = data.aws_iam_instance_profile.my_ssm_profile.name
@@ -54,7 +54,7 @@ resource "aws_instance" "controller" {
 resource "aws_instance" "monitoring" {
   ami                    = data.aws_ami.my_ami.id
   instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.devops_private_subnet.id
+  subnet_id              = module.vpc.private_subnets[0]
   private_ip             = "10.0.0.136"
   vpc_security_group_ids = [aws_security_group.devops_private_sg.id]
   iam_instance_profile   = data.aws_iam_instance_profile.my_ssm_profile.name

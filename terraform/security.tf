@@ -2,7 +2,7 @@
 resource "aws_security_group" "devops_public_sg" {
   name        = "devops-public-sg"
   description = "Security Group untuk Web Server Public"
-  vpc_id      = aws_vpc.devops_vpc.id
+  vpc_id      = module.vpc.vpc_id
 
   tags = {
     Name = "devops-public-sg"
@@ -47,7 +47,7 @@ resource "aws_vpc_security_group_egress_rule" "public_all_egress" {
 resource "aws_security_group" "devops_private_sg" {
   name        = "devops-private-sg"
   description = "Security Group untuk Private Server"
-  vpc_id      = aws_vpc.devops_vpc.id
+  vpc_id      = module.vpc.vpc_id
 
   tags = {
     Name = "devops-private-sg"
