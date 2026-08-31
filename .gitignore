@@ -1,0 +1,39 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Node / App
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ansible
+*.retry
+*.log
+ansible-debug.log
+
+# Secrets & Keys
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+cloudflared-cert.pem
+credentials.json
