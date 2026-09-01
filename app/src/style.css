@@ -1,0 +1,120 @@
+:root {
+  --bg: #0b1220; --cyan: #38f5c9; --cyan2: #22d3ee; --text: #7dd3fc;
+  --mono: ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); }
+body { font-family: var(--mono); }
+
+#stage, #particles {
+  position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; display: block;
+}
+#stage { z-index: 1; }
+#particles { z-index: 0; }
+#svg-overlay { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; z-index: 2; pointer-events: none; }
+
+#scenes { position: relative; z-index: 4; }
+
+/* full-screen flare for the finale reveal (driven by the scroll timeline) */
+#flash {
+  position: fixed; inset: 0; z-index: 6; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at 50% 55%, #d6fff5, #38f5c9 42%, transparent 72%);
+}
+
+/* final ceremony: 3D-tilted ASCII "DOCKER" wordmark above the revealed logo.
+   Parent holds the (un-animated) 3D transform; the <pre> is opacity/rise-animated
+   by the timeline, so anime's transform doesn't clobber the perspective. */
+#ceremony {
+  position: fixed; top: 6%; left: 50%; z-index: 5; pointer-events: none;
+  transform: translateX(-50%) perspective(720px) rotateX(20deg);
+  transform-origin: top center;
+}
+/* +50% size, whale cyan palette */
+#ceremony-art {
+  margin: 0; white-space: pre; line-height: 1.02; color: #35dced;
+  font: 700 clamp(8px, 1.6vw, 20px)/1.02 ui-monospace, Menlo, monospace;
+  text-shadow:
+    0 0 12px rgba(34, 211, 238, 0.9),
+    0 3px 0 #0b6b82, 0 6px 0 #06414f, 0 10px 18px rgba(0, 0, 0, 0.6);
+}
+/* each line materialises with a left→right wipe + unblur + rise, cascading */
+#ceremony-art .cl {
+  display: block; opacity: 0;
+  transform: translateY(16px);
+  clip-path: inset(0 100% 0 0);
+  filter: blur(4px);
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 1.5, 0.3, 1),
+    clip-path 0.6s ease, filter 0.5s ease;
+}
+#ceremony.show #ceremony-art .cl {
+  opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); filter: blur(0);
+}
+#ceremony.show .cl:nth-child(1) { transition-delay: 0s; }
+#ceremony.show .cl:nth-child(2) { transition-delay: 0.09s; }
+#ceremony.show .cl:nth-child(3) { transition-delay: 0.18s; }
+#ceremony.show .cl:nth-child(4) { transition-delay: 0.27s; }
+#ceremony.show .cl:nth-child(5) { transition-delay: 0.36s; }
+#ceremony.show .cl:nth-child(6) { transition-delay: 0.45s; }
+/* once the wipe finishes: glow pulse + a prominent vertical float paced to the
+   whale's bob (~5.2s period) */
+#ceremony.show #ceremony-art {
+  animation:
+    ceremony-glow 2.2s ease-in-out infinite 0.7s,
+    ceremony-float 5.2s ease-in-out infinite 0.7s;
+}
+@keyframes ceremony-glow {
+  0%, 100% { text-shadow: 0 0 12px rgba(34, 211, 238, 0.75),
+    0 3px 0 #0b6b82, 0 6px 0 #06414f, 0 10px 18px rgba(0, 0, 0, 0.6); }
+  50% { text-shadow: 0 0 30px rgba(34, 211, 238, 1), 0 0 54px rgba(34, 211, 238, 0.55),
+    0 3px 0 #0b6b82, 0 6px 0 #06414f, 0 10px 18px rgba(0, 0, 0, 0.6); }
+}
+@keyframes ceremony-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #ceremony-art .cl { transition: opacity 0.3s ease; transform: none; clip-path: none; filter: none; }
+  #ceremony.show #ceremony-art { animation: none; }
+}
+.scene { height: 90vh; }               /* ~630vh total scroll */
+.scene[data-beat="hero"] { height: 100vh; }
+
+.fallback { position: relative; z-index: 5; padding: 6vh 6vw; }
+
+.scene { display: flex; align-items: center; padding: 0 8vw; }
+.scene[data-beat="hero"] { justify-content: center; }
+.copy { max-width: 460px; background: rgba(5,10,18,.55); border: 1px solid #16303f;
+  border-radius: 12px; padding: 20px 22px; backdrop-filter: blur(3px); }
+.copy.center { text-align: center; background: transparent; border: 0; }
+.copy h1 { color: #e2e8f0; font-size: clamp(28px, 5vw, 52px); margin: 0 0 10px; }
+.copy p { color: #9fb3c8; line-height: 1.6; }
+code { color: #a5f3fc; background: rgba(56,245,201,.08); padding: 1px 5px; border-radius: 4px; }
+.hint { margin-top: 24px; opacity: .7; display: flex; justify-content: center; animation: nudge 1.6s infinite; }
+@keyframes nudge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+@media (prefers-reduced-motion: reduce) { .hint { animation: none; } }
+
+.fb-layers { list-style: none; padding: 0; max-width: 760px; }
+.fb-layers li { display: grid; grid-template-columns: 28px 1fr; gap: 6px 12px;
+  align-items: start; padding: 10px 0; border-bottom: 1px solid #16303f; }
+.fb-layers .fb-note { grid-column: 2; color: #9fb3c8; font-size: 13px; }
+.fallback pre { background: #050a12; border: 1px solid #16606b; border-radius: 8px;
+  padding: 14px; color: #a5f3fc; overflow: auto; }
+
+/* audio controls (WebGL mode only; revealed by main.js) */
+.audio-btn {
+  position: fixed; z-index: 7; display: none;
+  border: 1px solid var(--cyan); background: rgba(5, 10, 18, 0.7); color: var(--cyan);
+  font-family: var(--mono); cursor: pointer; backdrop-filter: blur(3px);
+}
+#sound-invite {
+  bottom: 24px; bottom: max(24px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
+  align-items: center; gap: 8px; padding: 10px 16px; border-radius: 22px; font-size: 14px;
+}
+#sound-toggle {
+  top: 18px; top: max(18px, env(safe-area-inset-top));
+  right: 18px; right: max(18px, env(safe-area-inset-right));
+  width: 44px; height: 44px; border-radius: 50%; padding: 0;
+  place-items: center;
+}
+@media (prefers-reduced-motion: reduce) { .audio-btn { display: none !important; } }
