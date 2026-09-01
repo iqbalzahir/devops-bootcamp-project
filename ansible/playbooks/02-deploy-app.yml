@@ -1,0 +1,52 @@
+---
+- name: Deploy Aplikasi Web dari AWS ECR
+  hosts: web
+  become: true
+  vars:
+    aws_region: "ap-southeast-1"
+    ecr_registry: "380267955385.dkr.ecr.ap-southeast-1.amazonaws.com"
+    ecr_image: "380267955385.dkr.ecr.ap-southeast-1.amazonaws.com/devops-bootcamp/final-project-iqbal:latest"
+    container_name: "shipit-app"
+    web_port: 80
+
+  tasks:
+    - name: Pastikan pakej sokongan dipasang
+      apt:
+        name:
+          - unzip
+          - curl
+          - python3-pip
+          - python3-docker
+        state: present
+        update_cache: yes
+
+    - name: Pastikan AWS CLI dipasang jika belum ada
+      shell: |
+        if ! command -v aws &> /dev/null; then
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+          unzip -q /tmp/awscliv2.zip -d /tmp
+          /tmp/aws/install
+          rm -rf /tmp/aws /tmp/awscliv2.zip
+        fi
+      changed_when: false
+
+    - name: Log masuk ke AWS ECR
+      shell: >
+        aws ecr get-login-password --region {{ aws_region }} |
+        docker login --username AWS --password-stdin {{ ecr_registry }}
+      changed_when: false
+
+    - name: Tarik imej Docker terkini dari AWS ECR
+      docker_image:
+        name: "{{ ecr_image }}"
+        source: pull
+        force_source: true
+
+    - name: Jalankan Container Aplikasi Web di Port 80
+      docker_container:
+        name: "{{ container_name }}"
+        image: "{{ ecr_image }}"
+        state: started
+        restart_policy: always
+        published_ports:
+          - "{{ web_port }}:80"

@@ -1,0 +1,6 @@
+---
+- name: Pasang Docker pada Semua Pelayan
+  hosts: all
+  become: true
+  roles:
+    - role: geerlingguy.docker

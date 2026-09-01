@@ -1,0 +1,6 @@
+---
+- name: 01 - Setup Docker pada Semua Server
+  import_playbook: playbooks/01-docker.yml
+
+- name: 02 - Deploy Aplikasi Web ke Web Server
+  import_playbook: playbooks/02-deploy-app.yml
