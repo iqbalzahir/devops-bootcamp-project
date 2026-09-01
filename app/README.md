@@ -1,25 +1,41 @@
-# docker-scrollytelling
+# launchpad — your ship
 
-A single-page, scroll-driven 3D explainer of a multi-stage Dockerfile — built
-with Vite, Three.js, anime.js v4, SVG, and Canvas 2D. Scroll to build the image
-layer by layer; falls back to a static blueprint without WebGL or with
-reduced-motion.
+A small personal **ship microsite**: a Three.js spaceship you customize, and the thing your
+CI/CD pipeline builds, checks, and ships across the four sessions.
 
-## Run
+## Customize it
+
+Edit **`ship.config.json`** — the only file you need to touch:
+
+```json
+{
+  "shipName": "Nebula Runner",
+  "color": "#22d3ee",
+  "shipModel": "fighter",
+  "emblem": "comet"
+}
+```
+
+- `shipName` — up to 24 characters.
+- `color` — a hex colour like `#22d3ee`, **or** a colour name (recolours your ship and its accent).
+  Names: `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`,
+  `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`, `white`, `gray`/`grey`, `black`.
+  (`white`/`gray`/`black` keep the ship's neutral factory paint.)
+- `shipModel` — one of: `fighter`, `interceptor`, `hauler`, `scout`.
+- `emblem` — one of: `comet`, `bolt`, `star`, `ring`, `delta`, `phoenix`.
+
+Your **callsign** is your GitHub username — it's set automatically when the pipeline runs. On the
+site, a **telemetry HUD** shows your ship class's spec readout plus this build's deploy facts
+(callsign, commit, build time) — the pipeline made visible on your own ship.
+
+## Run it
+
 ```bash
 npm install
-npm run dev      # http://localhost:5173
+npm run dev        # live preview
+npm test           # pre-flight check — fails (ABORT) if ship.config.json is invalid
+npm run build      # static site → dist/
+npm run preview    # serve the built site on :8080
 ```
 
-## Test
-```bash
-npm test         # unit (vitest)
-npm run test:e2e # smoke (playwright)
-```
-
-## Credits
-- Whale model (`public/whale.glb`): "Docker logo" by David Balan — CC-BY, via [Poly Pizza](https://poly.pizza/m/54F5KRzf3UQ).
-- Container model (`public/container.glb`): "Container Small" by Quaternius — CC0 (public domain), via [Poly Pizza](https://poly.pizza/m/B79i6fHgVU).
-- Ambient track (`public/ambient.mp3`): "Stranger Things" by Music Unlimited — Pixabay Content License (royalty-free), via [Pixabay](https://pixabay.com/music/).
-
-The two models are re-skinned into the blueprint style at runtime; the track loops as background audio once the visitor enables sound.
+`npm test` is the pre-flight gate: a bad `ship.config.json` exits non-zero and blocks the launch.

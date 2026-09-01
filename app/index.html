@@ -2,35 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Anatomy of a Docker Image</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ship — Launchpad</title>
   </head>
   <body>
-    <div id="app">
-      <canvas id="stage"></canvas>
-      <canvas id="particles"></canvas>
-      <svg id="svg-overlay" xmlns="http://www.w3.org/2000/svg"></svg>
-
-      <div id="scenes">
-        <section class="scene" data-beat="hero">
-          <div class="copy center">
-            <h1>Anatomy of a Docker Image</h1>
-            <p>Scroll to build this app's image, one layer at a time.</p>
-            <div class="hint" id="scroll-hint"></div>
-          </div>
-        </section>
-        <section class="scene" data-beat="build"></section>
-        <section class="scene" data-beat="cut"></section>
-        <section class="scene" data-beat="artifact"></section>
-        <section class="scene" data-beat="explode"></section>
-        <section class="scene" data-beat="run"></section>
-        <section class="scene" data-beat="recap"></section>
-      </div>
-      <div id="flash"></div>
-      <div id="ceremony"><pre id="ceremony-art"><span class="cl">██████╗  ██████╗  ██████╗██╗  ██╗███████╗██████╗</span><span class="cl">██╔══██╗██╔═══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗</span><span class="cl">██║  ██║██║   ██║██║     █████╔╝ █████╗  ██████╔╝</span><span class="cl">██║  ██║██║   ██║██║     ██╔═██╗ ██╔══╝  ██╔══██╗</span><span class="cl">██████╔╝╚██████╔╝╚██████╗██║  ██╗███████╗██║  ██║</span><span class="cl">╚═════╝  ╚═════╝  ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝</span></pre></div>
-      <button id="sound-invite" class="audio-btn" type="button"></button>
-      <button id="sound-toggle" class="audio-btn" type="button" aria-label="Toggle sound"></button>
-    </div>
+    <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

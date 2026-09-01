@@ -1,25 +1,31 @@
-import { LAYERS, DOCKERFILE_TEXT } from './dockerfile.js'
-import { mdi } from './icons.js'
+import { emblemSvg } from './emblems.js';
+import { escapeHtml } from './dom.js';
+import { renderTelemetry } from './telemetry.js';
 
 export function shouldUseFallback({ gl, reducedMotion }) {
-  return !gl || !!reducedMotion
+  return !gl || !!reducedMotion;
 }
 
-export function renderFallback(root) {
-  const wrap = document.createElement('div')
-  wrap.className = 'fallback'
-  wrap.innerHTML = `
-    <h1>Anatomy of a Docker Image</h1>
-    <p>A static view of this app's multi-stage Dockerfile.</p>
-    <ol class="fb-layers">
-      ${LAYERS.map((l) => `
-        <li>
-          <span class="fb-icon">${mdi(l.icon, 18, '#38f5c9')}</span>
-          <code>${l.instruction} ${l.args}</code>
-          <span class="fb-note">${l.note}</span>
-        </li>`).join('')}
-    </ol>
-    <pre>${DOCKERFILE_TEXT}</pre>
-  `
-  root.append(wrap)
+export function detectWebGL() {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+  } catch {
+    return false;
+  }
+}
+
+export function renderFallback(root, params, callsign, note = 'Static view — motion off (reduced-motion or no WebGL).') {
+  const el = document.createElement('div');
+  el.className = 'fallback';
+  el.style.setProperty('--ship-color', params.color);
+  el.innerHTML = `
+    <div class="badge">${emblemSvg(params.emblem)}</div>
+    <h1 class="ship-name">${escapeHtml(params.shipName)}</h1>
+    <p class="callsign">${callsign ? '@' + escapeHtml(callsign) : 'callsign set at launch'}</p>
+    <div class="swatch"></div>
+    <p class="note">${note}</p>
+  `;
+  root.append(el);
+  renderTelemetry(root, params, callsign); // same readout as the live view (reduced-motion parity)
 }

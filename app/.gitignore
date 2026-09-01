@@ -1,8 +1,6 @@
-node_modules
-dist
-*.log
+node_modules/
+dist/
 .DS_Store
-.superpowers/
-test-results/
-playwright-report/
-.playwright-cli/
+*.log
+.env
+.env.*

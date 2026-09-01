@@ -2,9 +2,6 @@ node_modules
 dist
 .git
 .gitignore
-.github
 Dockerfile
 README.md
-docs
-tests
-e2e
+CREDITS.md

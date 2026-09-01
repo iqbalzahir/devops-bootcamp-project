@@ -1,25 +1,20 @@
 {
-  "name": "docker-scrollytelling",
+  "name": "shipit-launchpad",
+  "version": "0.0.0",
   "private": true,
-  "version": "1.0.0",
   "type": "module",
-  "description": "3D scroll-driven explainer of a multi-stage Dockerfile",
+  "description": "The learner ship microsite — a customizable Three.js rocket a pipeline builds, checks, and ships",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0 --port 8080",
-    "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test": "node scripts/preflight.mjs",
+    "test:unit": "node --test"
   },
   "dependencies": {
-    "animejs": "^4.0.0",
-    "three": "^0.169.0",
-    "@mdi/js": "^7.4.47"
+    "three": "^0.169.0"
   },
   "devDependencies": {
-    "vite": "^6.0.7",
-    "vitest": "^2.1.0",
-    "jsdom": "^25.0.0",
-    "@playwright/test": "^1.48.0"
+    "vite": "^6.0.7"
   }
 }
