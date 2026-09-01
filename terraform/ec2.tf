@@ -12,12 +12,28 @@ data "aws_iam_instance_profile" "my_ssm_profile" {
   name = "EC2-SSM-Role"
 }
 
+# Jana SSH Key Pair ED25519 secara automatik
+resource "tls_private_key" "ssh_key" {
+  algorithm = "ED25519"
+}
+
+# Daftarkan Public Key ke AWS Key Pair
+resource "aws_key_pair" "devops_key" {
+  key_name   = "devops-bootcamp-key-iqbal"
+  public_key = tls_private_key.ssh_key.public_key_openssh
+
+  tags = {
+    Name = "devops-bootcamp-key-iqbal"
+  }
+}
+
 # 1. Web Server (Public Subnet: 10.0.0.5)
 resource "aws_instance" "web_server" {
   ami                    = data.aws_ami.my_ami.id
   instance_type          = "t3.micro"
   subnet_id              = module.vpc.public_subnets[0]
   private_ip             = "10.0.0.5"
+  key_name               = aws_key_pair.devops_key.key_name
   vpc_security_group_ids = [aws_security_group.devops_public_sg.id]
   iam_instance_profile   = data.aws_iam_instance_profile.my_ssm_profile.name
 
@@ -42,8 +58,31 @@ resource "aws_instance" "controller" {
   instance_type          = "t3.micro"
   subnet_id              = module.vpc.private_subnets[0]
   private_ip             = "10.0.0.135"
+  key_name               = aws_key_pair.devops_key.key_name
   vpc_security_group_ids = [aws_security_group.devops_private_sg.id]
   iam_instance_profile   = data.aws_iam_instance_profile.my_ssm_profile.name
+
+  # Automasi persediaan Ansible & Private Key semasa pelayan boot
+  user_data = <<-EOF
+    #!/bin/bash
+    apt update -y
+    apt install -y ansible git
+
+    # Simpan private key untuk Ansible
+    mkdir -p /home/ubuntu/.ssh
+    cat << 'KEY' > /home/ubuntu/.ssh/id_ed25519
+    ${tls_private_key.ssh_key.private_key_openssh}
+    KEY
+    chmod 600 /home/ubuntu/.ssh/id_ed25519
+    chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+
+    # Clone repositori projek
+    sudo -u ubuntu git clone https://github.com/iqbalzahir/devops-bootcamp-project.git /home/ubuntu/devops-bootcamp-project || true
+    if [ -d "/home/ubuntu/devops-bootcamp-project/ansible" ]; then
+      cd /home/ubuntu/devops-bootcamp-project/ansible
+      sudo -u ubuntu ansible-galaxy install -r requirements.yml || true
+    fi
+  EOF
 
   tags = {
     Name = "Ansible controller"
@@ -56,6 +95,7 @@ resource "aws_instance" "monitoring" {
   instance_type          = "t3.micro"
   subnet_id              = module.vpc.private_subnets[0]
   private_ip             = "10.0.0.136"
+  key_name               = aws_key_pair.devops_key.key_name
   vpc_security_group_ids = [aws_security_group.devops_private_sg.id]
   iam_instance_profile   = data.aws_iam_instance_profile.my_ssm_profile.name
 
