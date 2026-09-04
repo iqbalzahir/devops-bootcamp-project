@@ -4,3 +4,6 @@
 
 - name: 02 - Deploy Aplikasi Web ke Web Server
   import_playbook: playbooks/02-deploy-app.yml
+
+- name: 03 - Setup Monitoring (Prometheus, Grafana, Node Exporter)
+  import_playbook: playbooks/03-monitoring.yml

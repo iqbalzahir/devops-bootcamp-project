@@ -18,10 +18,10 @@ resource "aws_vpc_security_group_ingress_rule" "public_http_ingress" {
   to_port           = 80
 }
 
-# Port 9100 (Node Exporter) dari Monitoring Server (10.0.0.136/32) sahaja
+# Port 9100 (Node Exporter) dari Subnet VPC (10.0.0.0/24)
 resource "aws_vpc_security_group_ingress_rule" "public_node_exporter_ingress" {
   security_group_id = aws_security_group.devops_public_sg.id
-  cidr_ipv4         = "10.0.0.136/32"
+  cidr_ipv4         = "10.0.0.0/24"
   ip_protocol       = "tcp"
   from_port         = 9100
   to_port           = 9100
@@ -61,6 +61,24 @@ resource "aws_vpc_security_group_ingress_rule" "private_ssh_ingress" {
   ip_protocol       = "tcp"
   from_port         = 22
   to_port           = 22
+}
+
+# Port 9090 (Prometheus) dari Subnet VPC (10.0.0.0/24)
+resource "aws_vpc_security_group_ingress_rule" "private_prometheus_ingress" {
+  security_group_id = aws_security_group.devops_private_sg.id
+  cidr_ipv4         = "10.0.0.0/24"
+  ip_protocol       = "tcp"
+  from_port         = 9090
+  to_port           = 9090
+}
+
+# Port 3000 (Grafana) dari Subnet VPC (10.0.0.0/24)
+resource "aws_vpc_security_group_ingress_rule" "private_grafana_ingress" {
+  security_group_id = aws_security_group.devops_private_sg.id
+  cidr_ipv4         = "10.0.0.0/24"
+  ip_protocol       = "tcp"
+  from_port         = 3000
+  to_port           = 3000
 }
 
 # Egress All

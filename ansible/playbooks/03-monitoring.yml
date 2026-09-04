@@ -1,0 +1,37 @@
+---
+- name: Pasang node_exporter pada Web Server
+  hosts: web
+  become: true
+  roles:
+    - prometheus.prometheus.node_exporter
+
+- name: Naikkan stack pemantauan (Prometheus & Grafana) pada Monitoring Server
+  hosts: monitoring
+  become: true
+  vars:
+    docker_users: [ubuntu]
+  roles:
+    - geerlingguy.docker
+  tasks:
+    - name: Cipta folder stack
+      file:
+        path: /opt/monitoring
+        state: directory
+        mode: '0755'
+
+    - name: Hantar prometheus.yaml
+      template:
+        src: ../templates/prometheus.yaml.j2
+        dest: /opt/monitoring/prometheus.yaml
+        mode: '0644'
+
+    - name: Hantar compose.yaml
+      template:
+        src: ../templates/compose.yaml.j2
+        dest: /opt/monitoring/compose.yaml
+        mode: '0644'
+
+    - name: Naikkan container
+      command: docker compose up -d
+      args:
+        chdir: /opt/monitoring
