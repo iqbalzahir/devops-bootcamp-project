@@ -54,6 +54,7 @@ resource "aws_eip" "web_eip" {
 
 # 2. Ansible Controller (Private Subnet: 10.0.0.135)
 resource "aws_instance" "controller" {
+  depends_on             = [module.vpc]
   ami                    = data.aws_ami.my_ami.id
   instance_type          = "t3.micro"
   subnet_id              = module.vpc.private_subnets[0]
@@ -65,8 +66,14 @@ resource "aws_instance" "controller" {
   # Automasi persediaan Ansible & Private Key semasa pelayan boot
   user_data = <<-EOF
     #!/bin/bash
+    # Tunggu sehingga sambungan internet keluar (NAT Gateway) sedia
+    until curl -s --connect-timeout 5 http://archive.ubuntu.com > /dev/null; do
+      echo "Menunggu internet bersedia..."
+      sleep 5
+    done
+
     apt update -y
-    apt install -y ansible git
+    apt install -y ansible-core git
 
     # Simpan private key untuk Ansible
     mkdir -p /home/ubuntu/.ssh
@@ -91,6 +98,7 @@ resource "aws_instance" "controller" {
 
 # 3. Monitoring Server (Private Subnet: 10.0.0.136)
 resource "aws_instance" "monitoring" {
+  depends_on             = [module.vpc]
   ami                    = data.aws_ami.my_ami.id
   instance_type          = "t3.micro"
   subnet_id              = module.vpc.private_subnets[0]
