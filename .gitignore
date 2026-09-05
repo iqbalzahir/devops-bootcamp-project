@@ -37,3 +37,7 @@ id_rsa*
 id_ed25519*
 cloudflared-cert.pem
 credentials.json
+
+# Terraform secrets
+*.tfvars
+*.tfvars.json
