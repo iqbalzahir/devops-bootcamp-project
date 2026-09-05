@@ -18,6 +18,7 @@ services:
   tunnel:
     image: cloudflare/cloudflared:latest
     restart: unless-stopped
+    network_mode: host
     command: tunnel --no-autoupdate run --token {{ cloudflare_tunnel_token }}
 
 volumes:
