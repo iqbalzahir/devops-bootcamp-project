@@ -5,11 +5,12 @@
   roles:
     - prometheus.prometheus.node_exporter
 
-- name: Naikkan stack pemantauan (Prometheus & Grafana) pada Monitoring Server
+- name: Naikkan stack pemantauan (Prometheus, Grafana & Cloudflare Tunnel) pada Monitoring Server
   hosts: monitoring
   become: true
   vars:
     docker_users: [ubuntu]
+    cloudflare_tunnel_token: "eyJhIjoiY2I2ZGM1M2E4MGMzYjUwNDFlZjVhYjdhNjI5MTczMmYiLCJ0IjoiYTQ1Y2UxY2QtZmJlMC00YzI2LThiN2EtNThmMmY2Zjg3NjRiIiwicyI6IllqVmhNV0ZoTmpFdE0yUTVNaTAwWkRJM0xXSm1aVGt0Tm1NeVpXSmhOVGt4WXpSbSJ9"
   roles:
     - geerlingguy.docker
   tasks:

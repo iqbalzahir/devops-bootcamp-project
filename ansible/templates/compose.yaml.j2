@@ -15,5 +15,10 @@ services:
       - grafana-data:/var/lib/grafana
     restart: unless-stopped
 
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token {{ cloudflare_tunnel_token }}
+
 volumes:
   grafana-data:
