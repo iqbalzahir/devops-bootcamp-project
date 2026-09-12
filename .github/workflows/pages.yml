@@ -41,6 +41,7 @@ jobs:
         run: |
           mkdir -p _site
           cp README.md _site/index.md
+          echo "docs.keepitshort.my" > _site/CNAME
           if [ -d "docs" ]; then
             cp -r docs/* _site/ || true
           fi
