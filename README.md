@@ -148,15 +148,4 @@ ansible-playbook site.yml
 1. **Dokumentasi Automatik (GitHub Pages):** Fail workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) menerbitkan `README.md` ke GitHub Pages secara automatik setiap kali ada perubahan.
 2. **Continuous Deployment (CD):** Fail workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) membina imej Docker baru, menolak ke AWS ECR, dan mengemaskini Web Server melalui **AWS Systems Manager (SSM)** tanpa memerlukan port SSH dibuka ke internet.
 
----
 
-## ✅ Kriteria Pematuhan Rubrik (Rubric Verification)
-
-| Seksyen | Skor | Status | Bukti Pelaksanaan |
-| :--- | :---: | :---: | :--- |
-| **1. Infrastructure Provisioning** | 30% | ✅ Selesai | S3 Backend (`5%`), VPC 2 Subnet (`10%`), Security Group (`5%`), 3 EC2 Instance (`10%`) |
-| **2. Configuration Management** | 25% | ✅ Selesai | Controller Node (`5%`), Docker Role (`5%`), Container App (`5%`), ECR Registry (`5%`), Idempotent (`5%`) |
-| **3. Monitoring & Observability** | 20% | ✅ Selesai | Prometheus Stack (`8%`), Grafana Dashboard 1860 (`8%`), Metrik Web Server Node Exporter (`4%`) |
-| **4. Domain & Secure Access** | 15% | ✅ Selesai | Domain Aktif (`5%`), Cloudflare Tunnel (`7%`), Monitoring Kekal Private Subnet (`3%`) |
-| **5. Documentation & Pages** | 10% | ✅ Selesai | GitHub Pages Workflow (`3%`), 3 URL Lengkap (`4%`), Penjelasan Berstruktur (`3%`) |
-| **JUMLAH KESELURUHAN** | **100%** | 🏆 **LULUS CEMERLANG** | **Memenuhi & melebihi syarat kelayakan minimum 60%** |
