@@ -10,8 +10,8 @@
 
 | Perkara | URL | Status |
 | :--- | :--- | :---: |
-| **Aplikasi Web** | `http://web.keepitshort.my` | ⏳ Dalam Proses |
-| **Monitoring (Grafana)** | `https://monitoring.keepitshort.my` | ⏳ Dalam Proses |
+| **Aplikasi Web** | `http://web.keepitshort.my` | ✅ Aktif |
+| **Monitoring (Grafana)** | `https://monitoring.keepitshort.my` | ✅ Aktif |
 | **Repositori Awam** | [github.com/iqbalzahir/devops-bootcamp-project](https://github.com/iqbalzahir/devops-bootcamp-project) | ✅ Aktif |
 
 ---
@@ -46,8 +46,8 @@ Projek ini membina infrastruktur pelayan selamat dan modular menggunakan Terrafo
 
 ## 🚀 Status Pelaksanaan Fasa
 
-- [ ] **Fasa 1:** Infrastructure Provisioning (Terraform IaC)
-- [ ] **Fasa 2:** Configuration Management & Deployment (Ansible & Docker)
-- [ ] **Fasa 3:** Monitoring & Observability (Prometheus & Grafana)
-- [ ] **Fasa 4:** Domain & Secure Access (Cloudflare Tunnel & DNS)
-- [ ] **Fasa 5:** CI/CD & GitHub Pages Documentation
+- [x] **Fasa 1:** Infrastructure Provisioning (Terraform IaC)
+- [x] **Fasa 2:** Configuration Management & Deployment (Ansible & Docker)
+- [x] **Fasa 3:** Monitoring & Observability (Prometheus & Grafana)
+- [x] **Fasa 4:** Domain & Secure Access (Cloudflare Tunnel & DNS)
+- [x] **Fasa 5:** CI/CD & GitHub Actions Automation
