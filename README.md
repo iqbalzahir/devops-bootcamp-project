@@ -6,13 +6,14 @@
 
 ---
 
-## 🌐 Tiga URL Wajib (Mandatory URLs)
+## 🌐 Senarai URL Projek (Project URLs)
 
 | Perkara | URL | Status | Penerangan |
 | :--- | :--- | :---: | :--- |
 | **Aplikasi Web** | [http://web.keepitshort.my](http://web.keepitshort.my) | ✅ Aktif | Aplikasi web kontena Docker dijalankan di Web Server (Port 80) melalui Cloudflare DNS |
 | **Monitoring (Grafana)** | [https://monitoring.keepitshort.my](https://monitoring.keepitshort.my) | ✅ Aktif | Dashboard pemantauan selamat diakses melalui Cloudflare Tunnel (Private Subnet) |
 | **Repositori Awam** | [github.com/iqbalzahir/devops-bootcamp-project](https://github.com/iqbalzahir/devops-bootcamp-project) | ✅ Aktif | Kod sumber lengkap merangkumi App, Terraform, Ansible & CI/CD Workflows |
+| **Dokumentasi (GitHub Pages)** | [https://iqbalzahir.github.io/devops-bootcamp-project/](https://iqbalzahir.github.io/devops-bootcamp-project/) | ✅ Aktif | Halaman dokumentasi awam yang diterbitkan secara automatik melalui GitHub Actions |
 
 ---
 
